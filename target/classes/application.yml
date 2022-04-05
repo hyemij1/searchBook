@@ -12,7 +12,7 @@ spring:
       enabled: true
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update # 개발 및 테스트 환경에서 사용. 테이블 생성 위해 추가
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -23,4 +23,4 @@ spring:
 kakao:
   host: https://dapi.kakao.com
   apikey: a49ddde24cf0941a7e94253849946401
-  bookpath: /v3/search/book
+  bookpath: /v3/search/book 
