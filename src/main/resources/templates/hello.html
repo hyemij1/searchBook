@@ -3,6 +3,15 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <title>Hello World!</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        		crossorigin="anonymous">
+        </script>
+        <style>
+        	th, td {
+				border: 1px #000 solid
+        	}
+        </style>
     </head>
     <body>
         <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
@@ -10,8 +19,55 @@
             <input type="submit" value="Sign Out"/>
         </form>
         
+        </br>
         <a href="/kakao/search">search</a>
-        <a href="/history">history</a>
+        
+        </br>
+        <h1>검색기록</h1>
+        <div id = "detailarea"></div>
+        
+      <script type="text/javascript">
+      function makeTable (res)	{
+		console.log(history);
+		
+		$("#detailarea").html("");
+	
+		let table = "<table style='border: 1px #000 solid'>";
+		table += "<tr><th>NO</th><th>검색어</th><th>검색시간</th></tr>";
+		
+		let no = 0;
+		res.forEach(function(history){
+			table += "<tr><td>" + ++no + "</td><td>" + history.keyword + "</td><td>" + history.inputdate + "</td></tr>";			
+		});
+		
+		table += "</table>";
+
+		$("#detailarea").append(table);
+		
+	}
+	
+      $(document).ready(function () {
+		
+		$.ajax({
+			url : "/history",
+			dataType : "json",
+			type : "get",
+			data : {},
+			success: function (res) {
+				console.log(res);
+				if ( res == null || res.length === 0 ) {
+					$("#detailarea").html("");
+					return;
+				}
+				
+				makeTable(res);
+			}
+			
+		});
+				
+	});
+	
+	</script>
         
     </body>
 </html>

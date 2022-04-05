@@ -9,16 +9,18 @@
         </script>
         <style>
         	th, td {
-		border: 1px #000 solid
-}
-        
+				border: 1px #000 solid
+        	}
         </style>
         
     </head>
     <body>
-        <div><label> keyword : <input type="text" id="query"/> </label></div>
+        <div>
+        	<label> keyword : <input type="text" id="query"/> </label>
+        	<button id = "searchButton">검색</button>
+        </div>
        
-        <button id = "searchButton">검색</button>
+        <div id = "recentarea"></div>
         <div id = "tablearea"></div>
         <div id = "detailarea"></div>
         
@@ -67,7 +69,7 @@
 	$(document).ready(function () {
 		
 		$.ajax({
-			url : "/history",
+			url : "/recent",
 			dataType : "json",
 			type : "get",
 			data : {},
