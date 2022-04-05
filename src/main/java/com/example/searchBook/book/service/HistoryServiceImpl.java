@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.searchBook.book.model.History;
+import com.example.searchBook.book.model.Recent;
 import com.example.searchBook.book.repository.HistoryRepository;
 
 @Service
@@ -24,6 +25,11 @@ public class HistoryServiceImpl implements HistoryService {
 	@Override
 	public void saveHistory(History history) {
 		historyRepository.saveHistory(history);
+	}
+
+	@Override
+	public List<Recent> findRecent() {
+		return historyRepository.findRecent();
 	}
 
 }

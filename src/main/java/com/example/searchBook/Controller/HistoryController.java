@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.searchBook.User.model.User;
 import com.example.searchBook.User.service.UserService;
 import com.example.searchBook.book.model.History;
+import com.example.searchBook.book.model.Recent;
 import com.example.searchBook.book.service.HistoryService;
 
 @Controller
@@ -34,8 +35,8 @@ public class HistoryController {
 	
 	@GetMapping(value = "/recent")
 	@ResponseBody
-	public List<History> recent(Principal principal, Model model) {
-		return null;
+	public List<Recent> recent(Principal principal, Model model) {
+		return historyService.findRecent();
 	}
 	
 }

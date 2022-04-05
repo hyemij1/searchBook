@@ -66,6 +66,25 @@
 		
 	}
 	
+	function recent(res) {
+		console.log(res);
+		
+		$("#recentarea").html("");
+		let table = "<table>";
+		table += "<tr><th>NO</th><th>검색어</th><th>검색시간</th></tr>";
+		
+		let no = 0;
+		res.forEach(function(recent){
+			table += "<tr><td>" + ++no + "</td><td>" + recent.keyword + "</td><td>" + recent.cnt + "</td></tr>";			
+		});
+		
+		table += "</table>";
+
+		$("#recentarea").append(table);
+		
+		
+	}
+	
 	$(document).ready(function () {
 		
 		$.ajax({
@@ -74,8 +93,8 @@
 			type : "get",
 			data : {},
 			success: function (res) {
-				alert("dddd");
 				console.log(res);
+				recent(res);
 			}
 			
 		});
