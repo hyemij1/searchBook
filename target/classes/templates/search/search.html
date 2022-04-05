@@ -66,6 +66,18 @@
 	
 	$(document).ready(function () {
 		
+		$.ajax({
+			url : "/history",
+			dataType : "json",
+			type : "get",
+			data : {},
+			success: function (res) {
+				alert("dddd");
+				console.log(res);
+			}
+			
+		});
+		
 		$("#searchButton").click(function () {
 			var inputdata = $('#query').val();
 			
@@ -97,16 +109,7 @@
 				}
 			});
 
-		});
-		
-		/*
-		$("td.doc-title").click(function () {
-			console.log("돼냐");
-			
-		});
-		*/
-		
-		
+		});		
 
 	});
 	     

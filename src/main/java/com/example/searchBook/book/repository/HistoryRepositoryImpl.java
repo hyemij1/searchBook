@@ -15,7 +15,7 @@ public class HistoryRepositoryImpl implements HistoryRepositoryCustom {
 	
 	@Override
 	public List<History> findByUserId(Long userId) {
-		TypedQuery<History> query = entityManager.createQuery("select h from History h where h.userId = :userId", History.class);
+		TypedQuery<History> query = entityManager.createQuery("select h from History h where h.userId = :userId order by h.inputdate desc", History.class);
 		query.setParameter("userId", userId);
 		return query.getResultList();
 	}
