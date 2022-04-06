@@ -26,37 +26,37 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/kakao")
 @RequiredArgsConstructor
 public class KakaoBookController {
-	
+
 	private final KakaoProperties kakaoProperties;
-	
+
 	@Autowired
 	private HistoryService historyService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@GetMapping("/searchBook")
 	@ResponseBody
 	public Book search(@RequestParam String query, @RequestParam int size, Principal principal, Model model) {
-		
+
 		User loginuser = userService.findByUsername(principal.getName());
-		
+
 		History history = new History();
 		history.setUserId(loginuser.getId());
 		history.setKeyword(query);
 		history.setInputdate(LocalDateTime.now());
-		
+
 		historyService.saveHistory(history);
-		
+
 		Mono<Book> mono = WebClient.builder().baseUrl(kakaoProperties.getHost()).build().get()
-				.uri(builder -> builder.path(kakaoProperties.getBookpath()).queryParam("query", query).queryParam("size", size).build())
-				.header("Authorization", "KakaoAK " + kakaoProperties.getApikey())
-				.exchangeToMono(res -> {
+				.uri(builder -> builder.path(kakaoProperties.getBookpath()).queryParam("query", query)
+						.queryParam("size", size).build())
+				.header("Authorization", "KakaoAK " + kakaoProperties.getApikey()).exchangeToMono(res -> {
 					return res.bodyToMono(Book.class);
 				});
 		return mono.block();
 	}
-	
+
 	@GetMapping(value = "/search")
 	public String search(Model model) {
 		return "search/search";

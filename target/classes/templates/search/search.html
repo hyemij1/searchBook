@@ -1,145 +1,155 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <head>
-        <title>Kakao SearchBook Example </title>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        		crossorigin="anonymous">
-        </script>
-        <style>
-        	th, td {
-				border: 1px #000 solid
-        	}
-        </style>
-        
-    </head>
-    <body>
-        <div>
-        	<label> keyword : <input type="text" id="query"/> </label>
-        	<button id = "searchButton">검색</button>
-        </div>
-       
-        <div id = "recentarea"></div>
-        <div id = "tablearea"></div>
-        <div id = "detailarea"></div>
-        
- 	<script type="text/javascript">
- 	function makeTable(documents) {
-		
-		$("#tablearea").html("");
-	
-		let table = "<table style='border: 1px #000 solid'>";
-		table += "<tr><th>제목</th></tr>";
-		table += addRow(documents)
-		table += "</table>";
-		$("#tablearea").append(table);
-	}
-	
-	function addRow(documents) {
-		let result = "";
-		documents.forEach(function(doc){
-			result += "<tr><td class='doc-title' onclick='searchDetail(" + JSON.stringify(doc) + ");'>";
-			result += doc.title;
-			result += "</td></tr>";
-		});
-		return result;
-	}
-	
-	function searchDetail (doc)	{
-		console.log(doc);
-		
-		$("#detailarea").html("");
-	
-		let table = "<table style='border: 1px #000 solid'>";
-		table += "<tr><th>제목</th><td>" + doc.title + "</td></tr>";
-		table += "<tr><th>도서 썸네일</th><td><img src = '" + doc.thumbnail + "'/></td></tr>";
-		table += "<tr><th>소개</th><td>" + doc.contents + "</td></tr>";
-		table += "<tr><th>ISBN</th><td>" + doc.isbn + "</td></tr>";
-		table += "<tr><th>저자</th><td>" + doc.authors.join() + "</td></tr>";
-		table += "<tr><th>출판사</th><td>" + doc.publisher + "</td></tr>";
-		table += "<tr><th>출판일</th><td>" + doc.datetime + "</td></tr>";
-		table += "<tr><th>정가</th><td>" + doc.price + "</td></tr>";
-		table += "<tr><th>판매가</th><td>" + doc.salePrice + "</td></tr>";
-		table += "</table>";
-		$("#detailarea").append(table);
-		
-	}
-	
-	function recent(res) {
-		console.log(res);
-		
-		$("#recentarea").html("");
-		let table = "<table>";
-		table += "<tr><th>NO</th><th>검색어</th><th>검색시간</th></tr>";
-		
-		let no = 0;
-		res.forEach(function(recent){
-			table += "<tr><td>" + ++no + "</td><td>" + recent.keyword + "</td><td>" + recent.cnt + "</td></tr>";			
-		});
-		
-		table += "</table>";
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-		$("#recentarea").append(table);
-		
-		
-	}
-	
-	$(document).ready(function () {
-		
-		$.ajax({
-			url : "/recent",
-			dataType : "json",
-			type : "get",
-			data : {},
-			success: function (res) {
-				console.log(res);
-				recent(res);
-			}
-			
-		});
-		
-		$("#searchButton").click(function () {
-			var inputdata = $('#query').val();
-			
-			if ( inputdata === "" ) {
-				alert("검색을 입력해 주세요");
-			}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+</script>
 
-			$.ajax({
-				url: "/kakao/searchBook",
-				dataType: "json",
-				type: "get",
-				data: {
-					query: inputdata,
-					size : 3
-				},
-				success: function (res) {
-					if ( res.documents == null || res.documents.length === 0 ) {
-						alert("검색결과가 없습니다.");
-						return;
-					}
-					
-					makeTable(res.documents);
-					console.log(res);
-					
-					
-				},
-				error: function (request, status, error) {
-					console.log("AJAX_ERROR");
-				}
+<head>
+	<title>SearchBook</title>
+
+	<style>
+		table {
+			text-align: center;
+		}
+
+		th,
+		td {
+			border: 1px #000 solid;
+			padding: 10px, 5px;
+		}
+
+		th {
+			background-color: bisque
+		}
+	</style>
+
+</head>
+
+<body>
+	<div>
+		<label> 검색어 : <input type="text" id="query" /> </label>
+		<button id="searchButton">검색</button>
+	</div>
+	
+	<div id="recentarea"></div>
+	</br>
+	<div id="tablearea"></div>
+	<div id="detailarea"></div>
+
+	<script type="text/javascript">
+		function makeTable(documents) {
+
+			$("#tablearea").html("");
+
+			let table = "<table style th, td='border: 1px #000 solid'>";
+			table += "<tr><th>제목</th></tr>";
+			table += addRow(documents)
+			table += "</table>";
+			$("#tablearea").append(table);
+		}
+
+		function addRow(documents) {
+			let result = "";
+			documents.forEach(function (doc) {
+				result += "<tr><td class='doc-title' onclick='searchDetail(" + JSON.stringify(doc) + ");'>";
+				result += doc.title;
+				result += "</td></tr>";
+			});
+			return result;
+		}
+
+		function searchDetail(doc) {
+			console.log(doc);
+
+			$("#detailarea").html("");
+
+			let table = "<table style='border: 1px #000 solid'>";
+			table += "<tr><th>제목</th><td>" + doc.title + "</td></tr>";
+			table += "<tr><th>도서 썸네일</th><td><img src = '" + doc.thumbnail + "'/></td></tr>";
+			table += "<tr><th>소개</th><td>" + doc.contents + "</td></tr>";
+			table += "<tr><th>ISBN</th><td>" + doc.isbn + "</td></tr>";
+			table += "<tr><th>저자</th><td>" + doc.authors.join() + "</td></tr>";
+			table += "<tr><th>출판사</th><td>" + doc.publisher + "</td></tr>";
+			table += "<tr><th>출판일</th><td>" + doc.datetime + "</td></tr>";
+			table += "<tr><th>정가</th><td>" + doc.price + "</td></tr>";
+			table += "<tr><th>판매가</th><td>" + doc.salePrice + "</td></tr>";
+			table += "</table>";
+			$("#detailarea").append(table);
+
+		}
+
+		function recent(res) {
+			console.log(res);
+
+			$("#recentarea").html("");
+			let table = "<table>";
+			table += "<tr><th>인기검색어</th>";
+
+			let no = 0;
+			res.forEach(function (recent) {
+				table += "<td>" + recent.keyword + "(" + recent.cnt + "회)</td>";
 			});
 
-		});		
+			table += "</tr></table>";
 
-	});
-	     
-	
-	
-	     
+			$("#recentarea").append(table);
+
+		}
+
+		$(document).ready(function () {
+
+			$.ajax({
+				url: "/recent",
+				dataType: "json",
+				type: "get",
+				data: {},
+				success: function (res) {
+					console.log(res);
+					recent(res);
+				}
+
+			});
+
+			$("#searchButton").click(function () {
+				var inputdata = $('#query').val();
+
+				if (inputdata === "") {
+					alert("검색어를 입력해 주세요");
+					return;
+				}
+
+				$.ajax({
+					url: "/kakao/searchBook",
+					dataType: "json",
+					type: "get",
+					data: {
+						query: inputdata,
+						size: 10
+					},
+					success: function (res) {
+						if (res.documents == null || res.documents.length === 0) {
+							alert("검색결과가 없습니다.");
+							return;
+						}
+
+						makeTable(res.documents);
+						console.log(res);
+
+
+					},
+					error: function (request, status, error) {
+						console.log("AJAX_ERROR");
+					}
+				});
+
+			});
+
+		});
+
 	</script>
-        
-        
-        
-    </body>
+
+</body>
+
 </html>

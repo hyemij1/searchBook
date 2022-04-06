@@ -20,7 +20,7 @@ public class HistoryServiceImpl implements HistoryService {
 	public List<History> findByUserId(Long userId) {
 		return historyRepository.findByUserId(userId);
 	}
-	
+
 	@Transactional
 	@Override
 	public void saveHistory(History history) {

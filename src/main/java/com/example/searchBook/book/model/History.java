@@ -32,6 +32,5 @@ public class History {
 	@Column(name = "inputdate")
 	@CreatedDate
 	private LocalDateTime inputdate;
-	
-	
+
 }

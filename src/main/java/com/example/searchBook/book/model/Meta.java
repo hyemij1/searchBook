@@ -12,5 +12,5 @@ public class Meta {
 	private String isEnd;
 	private int pageableCount;
 	private int totalCount;
-	
+
 }

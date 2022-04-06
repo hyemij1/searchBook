@@ -23,5 +23,5 @@ public class Documents {
 	private String title;
 	private List<String> translators;
 	private String url;
-	
+
 }

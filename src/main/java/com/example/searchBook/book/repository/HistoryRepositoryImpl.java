@@ -13,7 +13,7 @@ public class HistoryRepositoryImpl implements HistoryRepositoryCustom {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
 	public List<History> findByUserId(Long userId) {
 		TypedQuery<History> query = entityManager.createQuery(
@@ -21,7 +21,7 @@ public class HistoryRepositoryImpl implements HistoryRepositoryCustom {
 		query.setParameter("userId", userId);
 		return query.getResultList();
 	}
-	
+
 	@Override
 	public void saveHistory(History history) {
 		entityManager.persist(history);
@@ -29,10 +29,11 @@ public class HistoryRepositoryImpl implements HistoryRepositoryCustom {
 
 	@Override
 	public List<Recent> findRecent() {
-		List<Recent> query = entityManager.createQuery(
-				"select new com.example.searchBook.book.model.Recent(keyword, count(keyword)) " + 
-		        " from History h " + 
-			    " group by h.keyword order by count(keyword) desc", Recent.class).setMaxResults(5).getResultList();
+		List<Recent> query = entityManager
+				.createQuery("select new com.example.searchBook.book.model.Recent(keyword, count(keyword)) "
+						+ " from History h " 
+						+ " group by h.keyword order by count(keyword) desc", Recent.class)
+				.setMaxResults(5).getResultList();
 		return query;
 	}
 

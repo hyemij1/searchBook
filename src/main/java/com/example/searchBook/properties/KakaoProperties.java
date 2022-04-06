@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class KakaoProperties {
-	
+
 	private String host;
 	private String apikey;
 	private String bookpath;

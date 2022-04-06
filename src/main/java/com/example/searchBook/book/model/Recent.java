@@ -8,14 +8,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Recent {
-	
+
 	private String keyword;
 	private long cnt;
-	
-//	public Recent() {
-//		
-//	}
-	
+
 	public Recent(String keyword, long cnt) {
 		this.keyword = keyword;
 		this.cnt = cnt;

@@ -13,5 +13,5 @@ public class Book {
 
 	private Meta meta;
 	private List<Documents> documents;
-	
+
 }

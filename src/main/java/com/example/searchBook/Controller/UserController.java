@@ -15,17 +15,17 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@GetMapping(value = "/registration")
 	public String registration(Model model) {
 		model.addAttribute("userForm", new User());
 		return "login/registration";
 	}
-	
+
 	@PostMapping(value = "/registration")
 	public String registration(@ModelAttribute("userForm") User userForm) {
 		userService.saveUser(userForm);
 		return "home";
 	}
-	
+
 }

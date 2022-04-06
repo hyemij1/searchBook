@@ -20,23 +20,23 @@ public class HistoryController {
 
 	@Autowired
 	private HistoryService historyService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@GetMapping(value = "/history")
 	@ResponseBody
 	public List<History> history(Principal principal, Model model) {
-		
+
 		User loginuser = userService.findByUsername(principal.getName());
 
 		return historyService.findByUserId(loginuser.getId());
 	}
-	
+
 	@GetMapping(value = "/recent")
 	@ResponseBody
 	public List<Recent> recent(Principal principal, Model model) {
 		return historyService.findRecent();
 	}
-	
+
 }

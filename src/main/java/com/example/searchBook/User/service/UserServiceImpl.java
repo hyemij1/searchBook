@@ -21,7 +21,19 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void saveUser(User user) {
+		validateUser(user.getUsername());
 		userRepository.saveUser(user);
+	}
+
+	@Override
+	public void validateUser(String username) {
+
+		User result = userRepository.findByUserName(username);
+
+		if (username.equals(result.getUsername())) {
+			throw new IllegalStateException("이미 존재하는 사용자명입니다.");
+		}
+
 	}
 
 }

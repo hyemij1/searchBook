@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.searchBook.book.model.History;
 
 @Repository
-public interface HistoryRepository extends JpaRepository<History, Integer>, HistoryRepositoryCustom{
+public interface HistoryRepository extends JpaRepository<History, Integer>, HistoryRepositoryCustom {
 
 }
