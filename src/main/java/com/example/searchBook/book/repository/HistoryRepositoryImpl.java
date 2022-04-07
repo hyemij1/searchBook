@@ -33,7 +33,7 @@ public class HistoryRepositoryImpl implements HistoryRepositoryCustom {
 				.createQuery("select new com.example.searchBook.book.model.Recent(keyword, count(keyword)) "
 						+ " from History h " 
 						+ " group by h.keyword order by count(keyword) desc", Recent.class)
-				.setMaxResults(5).getResultList();
+				.setMaxResults(10).getResultList();
 		return query;
 	}
 
