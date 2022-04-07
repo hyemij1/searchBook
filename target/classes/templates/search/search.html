@@ -4,7 +4,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
 	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
-</script>
+	</script>
 
 <head>
 	<title>SearchBook</title>
@@ -32,13 +32,15 @@
 		<label> 검색어 : <input type="text" id="query" /> </label>
 		<button id="searchButton">검색</button>
 	</div>
-	
+
 	<div id="recentarea"></div>
 	</br>
 	<div id="tablearea"></div>
 	<div id="detailarea"></div>
 
 	<script type="text/javascript">
+		let searchList = {};
+
 		function makeTable(documents) {
 
 			$("#tablearea").html("");
@@ -53,15 +55,15 @@
 		function addRow(documents) {
 			let result = "";
 			documents.forEach(function (doc) {
-				result += "<tr><td class='doc-title' onclick='searchDetail(" + JSON.stringify(doc) + ");'>";
+				result += "<tr><td class='doc-title' onclick='searchDetail(\"" + doc.isbn + "\")'>";
 				result += doc.title;
 				result += "</td></tr>";
 			});
 			return result;
 		}
 
-		function searchDetail(doc) {
-			console.log(doc);
+		function searchDetail(isbn) {
+			let doc = searchList[isbn];
 
 			$("#detailarea").html("");
 
@@ -77,7 +79,6 @@
 			table += "<tr><th>판매가</th><td>" + doc.salePrice + "</td></tr>";
 			table += "</table>";
 			$("#detailarea").append(table);
-
 		}
 
 		function recent(res) {
@@ -100,19 +101,21 @@
 
 		$(document).ready(function () {
 
-			$.ajax({
-				url: "/recent",
-				dataType: "json",
-				type: "get",
-				data: {},
-				success: function (res) {
-					console.log(res);
-					recent(res);
-				}
+			function getRecents() {
+				$.ajax({
+					url: "/recent",
+					dataType: "json",
+					type: "get",
+					data: {},
+					success: function (res) {
+						console.log(res);
+						recent(res);
+					}
 
-			});
+				});
+			}
 
-			$("#searchButton").click(function () {
+			function getBooks() {
 				var inputdata = $('#query').val();
 
 				if (inputdata === "") {
@@ -134,16 +137,31 @@
 							return;
 						}
 
+						searchList = {};
+
+						res.documents.forEach(function (r) {
+							searchList[r.isbn] = r;
+						})
+
 						makeTable(res.documents);
 						console.log(res);
 
+						getRecents();
 
 					},
 					error: function (request, status, error) {
 						console.log("AJAX_ERROR");
 					}
 				});
+			}
 
+			getRecents();
+			$("#searchButton").click(getBooks);
+			$('#query').keyup(function (event) {
+				if (event.keyCode === 13) {
+					getBooks();
+				}
+				event.preventDefault();
 			});
 
 		});

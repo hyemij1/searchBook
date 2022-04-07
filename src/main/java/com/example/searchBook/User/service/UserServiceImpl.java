@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
 		User result = userRepository.findByUserName(username);
 
-		if (username.equals(result.getUsername())) {
+		if (result != null && username.equals(result.getUsername())) {
 			throw new IllegalStateException("이미 존재하는 사용자명입니다.");
 		}
 

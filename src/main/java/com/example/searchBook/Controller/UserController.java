@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.searchBook.User.model.User;
 import com.example.searchBook.User.service.UserService;
@@ -23,9 +24,14 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registration")
-	public String registration(@ModelAttribute("userForm") User userForm) {
-		userService.saveUser(userForm);
-		return "home";
-	}
+	public String registration(@ModelAttribute("userForm") User userForm, Model model, RedirectAttributes ra) {
+		try {
+			userService.saveUser(userForm);
+			return "home";
+		} catch (Exception e)	{
+			ra.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:registration";
+		}
 
+	}
 }

@@ -4,9 +4,23 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>SearchBook</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+					integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+	</script>
 </head>
 
 <body>
+
+	회원가입
+	<hr/>
+	<form name="userForm" th:action="@{/registration}" method="post" onsubmit="return validation()">
+		사용자명 : <input type="text" name="username" id="username" class="user-info" /></br>
+		비밀번호 : <input type="text" name="password" id="password" class="user-info" th:type="password" />
+		<br/>
+		<hr/>
+		<input type="submit" value="가입하기" />
+	</form>
+	<p id="errorText" th:text="${errorMessage}" style="color: brown" />
 	<script>
 		function validation() {
 			if (userForm.username.value == "") {
@@ -21,17 +35,10 @@
 			}
 		}
 
+		$('input.user-info').on('keyup', function (event)	{
+			$('#errorText').text('');
+		});
 	</script>
-	회원가입
-	<hr/>
-	<form name="userForm" th:action="@{/registration}" method="post" onsubmit="return validation()">
-		사용자명 : <input type="text" name="username" id="username" /></br>
-		비밀번호 : <input type="text" name="password" id="password" />
-		<br/>
-		<hr/>
-		<input type="submit" value="가입하기" />
-	</form>
-
 </body>
 
 </html>

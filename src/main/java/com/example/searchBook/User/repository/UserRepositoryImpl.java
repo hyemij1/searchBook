@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.searchBook.User.model.User;
 
+import java.util.List;
+
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
 	@PersistenceContext
@@ -20,7 +22,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 				"select u from User u where u.username = :username", User.class);
 		query.setParameter("username", userName);
 
-		return query.getSingleResult();
+		List<User> resultList = query.getResultList();
+
+		return resultList.stream().findAny().orElse(null);
 	}
 
 	@Override

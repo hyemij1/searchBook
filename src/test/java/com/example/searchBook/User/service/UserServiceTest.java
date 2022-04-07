@@ -19,7 +19,7 @@ public class UserServiceTest {
 	@Test
 	void findUser() {
 		User user = userService.findByUsername("user");
-		assertThat(user.getUsername()).as("##### findByUsername Test").isEqualTo("userr");
+		assertThat(user.getUsername()).as("##### findByUsername Test").isEqualTo("user");
 	}
 
 	@Test
@@ -27,7 +27,7 @@ public class UserServiceTest {
 
 		User user = new User();
 		user.setId(null);
-		user.setUsername("user1");
+		user.setUsername("user0");
 		user.setPassword("1234");
 		userService.saveUser(user);
 
